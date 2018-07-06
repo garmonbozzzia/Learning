@@ -5,8 +5,7 @@ import wvlet.log.{LogLevel, LogSupport, Logger}
 
 /* Created on 06.07.18 */
 object Logging extends LogSupport with App {
-
-
+  
   def print(msg: String): Unit = {
     info(msg)
     debug("debug message")

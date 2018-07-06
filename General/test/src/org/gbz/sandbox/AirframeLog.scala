@@ -2,13 +2,11 @@ package org.gbz.sandbox
 
 import utest._
 import wvlet.log.LogFormatter._
-import wvlet.log.{LogLevel, LogSupport, Logger}
+import wvlet.log.Logger
 
-object AirframeLog extends TestSuite with LogSupport {
-  Logger.setDefaultLogLevel(LogLevel.DEBUG)
-
+object AirframeLog extends LoggableTest {
   val tests = Tests {
-    'airframeLog - {
+    'AirframeLog - {
       def print(): Unit = {
         debug("debug message")
         info("Hello")
@@ -17,48 +15,32 @@ object AirframeLog extends TestSuite with LogSupport {
       }
 
       'Formatters - {
-        'Bare - print
+        'Bare - print()
         'SourceCodeLogFormatter - {
           Logger.setDefaultFormatter(SourceCodeLogFormatter)
-          print
+          print()
         }
         'AppLogFormatter - {
           Logger.setDefaultFormatter(AppLogFormatter)
-          print
+          print()
         }
         'TSVLogFormatter - {
           Logger.setDefaultFormatter(TSVLogFormatter)
-          print
+          print()
         }
         'IntelliJLogFormatter - {
           Logger.setDefaultFormatter(IntelliJLogFormatter)
-          print
+          print()
         }
         'SimpleLogFormatter - {
           Logger.setDefaultFormatter(SimpleLogFormatter)
-          print
+          print()
         }
         'BareFormatter - {
           Logger.setDefaultFormatter(BareFormatter)
-          print
+          print()
         }
       }
-
     }
-  }
-
-  override def utestBeforeEach(path: Seq[String]): Unit = {
-    Logger.setDefaultFormatter(SourceCodeLogFormatter)
-    Logger.scheduleLogLevelScan
-    super.utestBeforeEach(path)
-  }
-
-  override def utestAfterEach(path: Seq[String]): Unit = {
-    Logger.stopScheduledLogLevelScan
-    super.utestAfterEach(path)
-  }
-
-  override def utestAfterAll(): Unit = {
-    Logger.stopScheduledLogLevelScan
   }
 }
