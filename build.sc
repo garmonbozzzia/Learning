@@ -25,5 +25,7 @@ trait CommonModule extends ScalaModule {
 }
 
 object General extends CommonModule {
-
+  override def ivyDeps = Agg(
+    ivy"org.wvlet.airframe::airframe-log:0.50"
+  )
 }
