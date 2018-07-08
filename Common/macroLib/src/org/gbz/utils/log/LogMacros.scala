@@ -62,13 +62,84 @@ private[log] object LogMacros {
     }
   }
 
-  def logInfo(c: blackbox.Context): c.Tree = {
+  object Levels extends Enumeration {
+    val Trace, Debug, Info, Warn, Error = Value
+    type Level = Value
+  }
+  import Levels._
+
+  def levels(c: blackbox.Context): Map[Levels.Value, c.universe.Tree] = {
+    import c.universe._
+    Map(
+      Trace -> q"wvlet.log.LogLevel.TRACE",
+      Debug -> q"wvlet.log.LogLevel.DEBUG",
+      Info -> q"wvlet.log.LogLevel.INFO",
+      Warn -> q"wvlet.log.LogLevel.WARN",
+      Error -> q"wvlet.log.LogLevel.ERROR")
+  }
+
+  def log(c: blackbox.Context, l: Level) = {
     import c.universe._
     val q"$_($in)": c.universe.Tree = c.prefix.tree
-    val log = new MacroHelper[c.type](c).log(q"wvlet.log.LogLevel.INFO", in)
-    q"""
-       $log
-       $in
-     """
+    val log = new MacroHelper[c.type](c).log(levels(c)(l), in)
+    q"$log;$in"
   }
+
+  def logC(c: blackbox.Context, l: Level)(msg: c.Tree): c.Tree = {
+    import c.universe._
+    val q"$_($in)": c.universe.Tree = c.prefix.tree
+    val log = new MacroHelper[c.type](c).log(levels(c)(l), msg)
+    q"$log;$in"
+  }
+
+  def logW(c: blackbox.Context, l: Level)(reader: c.Tree): c.Tree = {
+    import c.universe._
+    val q"$_($in)": c.universe.Tree = c.prefix.tree
+    val msg: c.universe.Tree = q"$reader($in)"
+    val log = new MacroHelper[c.type](c).log(levels(c)(l), msg)
+    q"$log;$in"
+  }
+
+  def logE(c: blackbox.Context, l: Level)(cause: c.Tree) = {
+    import c.universe._
+    val q"$_($in)": c.universe.Tree = c.prefix.tree
+    val log = new MacroHelper[c.type](c).logWithCause(levels(c)(l), in, cause)
+    q"$log;$in"
+  }
+
+  def logCE(c: blackbox.Context, l: Level)(msg: c.Tree, cause: c.Tree): c.Tree = {
+    import c.universe._
+    val q"$_($in)": c.universe.Tree = c.prefix.tree
+    val log = new MacroHelper[c.type](c).logWithCause(levels(c)(l), msg, cause)
+    q"$log;$in"
+  }
+
+  def logWE(c: blackbox.Context, l: Level)(reader: c.Tree, cause: c.Tree): c.Tree = {
+    import c.universe._
+    val q"$_($in)": c.universe.Tree = c.prefix.tree
+    val msg: c.universe.Tree = q"$reader($in)"
+    val log = new MacroHelper[c.type](c).logWithCause(levels(c)(l), msg, cause)
+    q"$log;$in"
+  }
+
+  def logInfo(c: blackbox.Context): c.Tree = log(c, Info)
+  def logInfoE(c: blackbox.Context)(cause: c.Tree): c.Tree = logE(c, Info)(cause)
+  def logInfoC(c: blackbox.Context)(msg: c.Tree): c.Tree = logC(c,Info)(msg)
+  def logInfoCE(c: blackbox.Context)(msg: c.Tree, cause: c.Tree): c.Tree = logCE(c,Info)(msg, cause)
+  def logInfoW(c: blackbox.Context)(reader: c.Tree): c.Tree = logW(c,Info)(reader)
+  def logInfoWE(c: blackbox.Context)(reader: c.Tree, cause: c.Tree): c.Tree = logWE(c,Info)(reader, cause)
+
+  def logWarn(c: blackbox.Context): c.Tree = log(c, Warn)
+  def logWarnE(c: blackbox.Context)(cause: c.Tree): c.Tree = logE(c, Warn)(cause)
+  def logWarnC(c: blackbox.Context)(msg: c.Tree): c.Tree = logC(c,Warn)(msg)
+  def logWarnCE(c: blackbox.Context)(msg: c.Tree, cause: c.Tree): c.Tree = logCE(c,Warn)(msg, cause)
+  def logWarnW(c: blackbox.Context)(reader: c.Tree): c.Tree = logW(c,Warn)(reader)
+  def logWarnWE(c: blackbox.Context)(reader: c.Tree, cause: c.Tree): c.Tree = logWE(c,Warn)(reader, cause)
+
+  def logError(c: blackbox.Context): c.Tree = log(c, Error)
+  def logErrorE(c: blackbox.Context)(cause: c.Tree): c.Tree = logE(c, Error)(cause)
+  def logErrorC(c: blackbox.Context)(msg: c.Tree): c.Tree = logC(c,Error)(msg)
+  def logErrorCE(c: blackbox.Context)(msg: c.Tree, cause: c.Tree): c.Tree = logCE(c,Error)(msg, cause)
+  def logErrorW(c: blackbox.Context)(reader: c.Tree): c.Tree = logW(c,Error)(reader)
+  def logErrorWE(c: blackbox.Context)(reader: c.Tree, cause: c.Tree): c.Tree = logWE(c,Error)(reader, cause)
 }
