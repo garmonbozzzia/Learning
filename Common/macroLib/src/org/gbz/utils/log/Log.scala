@@ -4,6 +4,13 @@ import scala.language.experimental.macros
 
 object Log {
   implicit final class Ext[A](val a: A) extends AnyVal {
+    def log: A = macro LogMacros.logInfo
+    def log(cause: Throwable): A = macro LogMacros.logInfoE
+    def logC[B](msg: B): A = macro LogMacros.logInfoC
+    def logC[B](msg: B, cause: Throwable): A = macro LogMacros.logInfoCE
+    def logWith[B](reader: A => B): A = macro LogMacros.logInfoW
+    def logWith[B](reader: A => B, cause: Throwable): A = macro LogMacros.logInfoWE
+
     def logInfo: A = macro LogMacros.logInfo
     def logInfo(cause: Throwable): A = macro LogMacros.logInfoE
     def logInfoC[B](msg: B): A = macro LogMacros.logInfoC
