@@ -24,8 +24,30 @@ trait CommonModule extends ScalaModule {
 
 }
 
-object General extends CommonModule {
+trait MacroModule extends ScalaModule {
+  def scalaVersion = "2.12.4"
+  override def ivyDeps = Agg(
+    ivy"org.scala-lang:scala-reflect:2.12.4",
+  )
+}
+
+object Common extends CommonModule {
   override def ivyDeps = Agg(
     ivy"org.wvlet.airframe::airframe-log:0.50"
   )
+
+  object macroLib extends MacroModule
+
+  override def moduleDeps = Seq(macroLib)
+}
+
+object General extends CommonModule {
+
+  object macroLib extends MacroModule
+
+  override def ivyDeps = Agg(
+    ivy"org.wvlet.airframe::airframe-log:0.50"
+  )
+
+  override def moduleDeps = Seq(macroLib, Common)
 }

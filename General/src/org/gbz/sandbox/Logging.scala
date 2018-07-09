@@ -4,6 +4,7 @@ import wvlet.log.LogFormatter._
 import wvlet.log.{LogLevel, LogSupport, Logger}
 
 /* Created on 06.07.18 */
+import org.gbz.utils.log.Log._
 object Logging extends LogSupport with App {
   
   def print(msg: String): Unit = {
@@ -18,6 +19,7 @@ object Logging extends LogSupport with App {
   Logger.stopScheduledLogLevelScan
 
   Logger.setDefaultFormatter(SourceCodeLogFormatter)
+  "Hello".logInfo
   print("SourceCodeLogFormatter")
   Logger.setDefaultFormatter(AppLogFormatter)
   print("AppLogFormatter")
