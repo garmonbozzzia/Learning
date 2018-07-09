@@ -11,19 +11,20 @@ object LogTest extends TestSuite with LogSupport {
     * - {
       "Hello".logInfo
       "Hello".logInfo(new Exception("Exception!"))
-      "Hello".logInfoC("Hello!")
+      "Hello".logInfo("Hello!")
       "Hello".logInfoWith(x => x ++ x)
       "Hello".logInfoWith(x => x ++ x, new ArithmeticException("d b z"))
 
       "Hello".logError
       "Hello".logError(new Exception("Exception!"))
-      "Hello".logErrorC("Hello!")
+      "Hello".logError("Hello!")
       "Hello".logErrorWith(x => x ++ x)
       "Hello".logErrorWith(x => x ++ x, new ArithmeticException("d b z"))
 
       "Hello".logWarn
       "Hello".logWarn(new Exception("Exception!"))
-      "Hello".logWarnC("Hello!")
+      "Hello".logWarn("Hello!")
+      "Hello".logWarn("Hello!", new Exception("Exception!"))
       "Hello".logWarnWith(x => x ++ x)
       "Hello".logWarnWith(x => x ++ x, new ArithmeticException("d b z"))
     }

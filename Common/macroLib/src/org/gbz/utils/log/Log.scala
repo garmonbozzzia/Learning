@@ -13,22 +13,22 @@ object Log {
 
     def logInfo: A = macro LogMacros.logInfo
     def logInfo(cause: Throwable): A = macro LogMacros.logInfoE
-    def logInfoC[B](msg: B): A = macro LogMacros.logInfoC
-    def logInfoC[B](msg: B, cause: Throwable): A = macro LogMacros.logInfoCE
+    def logInfo[B](msg: B): A = macro LogMacros.logInfoC
+    def logInfo[B](msg: B, cause: Throwable): A = macro LogMacros.logInfoCE
     def logInfoWith[B](reader: A => B): A = macro LogMacros.logInfoW
     def logInfoWith[B](reader: A => B, cause: Throwable): A = macro LogMacros.logInfoWE
 
     def logWarn: A = macro LogMacros.logWarn
     def logWarn(cause: Throwable): A = macro LogMacros.logWarnE
-    def logWarnC[B](msg: B): A = macro LogMacros.logWarnC
-    def logWarnC[B](msg: B, cause: Throwable): A = macro LogMacros.logWarnCE
+    def logWarn[B](msg: B): A = macro LogMacros.logWarnC
+    def logWarn[B](msg: B, cause: Throwable): A = macro LogMacros.logWarnCE
     def logWarnWith[B](reader: A => B): A = macro LogMacros.logWarnW
     def logWarnWith[B](reader: A => B, cause: Throwable): A = macro LogMacros.logWarnWE
 
     def logError: A = macro LogMacros.logError
     def logError(cause: Throwable): A = macro LogMacros.logErrorE
-    def logErrorC[B](msg: B): A = macro LogMacros.logErrorC
-    def logErrorC[B](msg: B, cause: Throwable): A = macro LogMacros.logErrorCE
+    def logError[B](msg: B): A = macro LogMacros.logErrorC
+    def logError[B](msg: B, cause: Throwable): A = macro LogMacros.logErrorCE
     def logErrorWith[B](reader: A => B): A = macro LogMacros.logErrorW
     def logErrorWith[B](reader: A => B, cause: Throwable): A = macro LogMacros.logErrorWE
 
