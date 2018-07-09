@@ -9,11 +9,11 @@ object LogTest extends TestSuite with LogSupport {
   Logger.setDefaultFormatter(SourceCodeLogFormatter)
   override def tests = Tests{
     * - {
-      "Hello".logInfo
-      "Hello".logInfo(new Exception("Exception!"))
-      "Hello".logInfo("Hello!")
-      "Hello".logInfoWith(x => x ++ x)
-      "Hello".logInfoWith(x => x ++ x, new ArithmeticException("d b z"))
+      "Hello".log
+      "Hello".log(new Exception("Exception!"))
+      "Hello".log("Hello!")
+      "Hello".logWith(x => x ++ x)
+      "Hello".logWith(x => x ++ x, new ArithmeticException("d b z"))
 
       "Hello".logError
       "Hello".logError(new Exception("Exception!"))
